@@ -1,5 +1,6 @@
 package com.test.assignment.api
 
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -11,9 +12,10 @@ class ApiBuilder {
         fun getInstance(): Retrofit? {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl("https://api.github.com/")
+//                    .baseUrl("http://localhost:8000")
+                    .baseUrl("https://api-ssl.bitly.com/v4/")
                     .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+                    .build()
             }
             return retrofit
         }
