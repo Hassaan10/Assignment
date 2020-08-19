@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.webkit.URLUtil
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,15 +30,19 @@ class MainActivity : AppCompatActivity() {
     {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+//        val types = arrayOf("https://","http://")
+//
+//        spType.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,types)
+
         setObservers()
 
         btSubmit.setOnClickListener {
-            if( Patterns.WEB_URL.matcher(etUrl.text.toString()).matches()) {
+            if( Patterns.WEB_URL.matcher(etUrl.text.toString()).matches()&& URLUtil.isValidUrl(etUrl.text.toString())) {
                 showProgress(true)
                 getUrl()
             }
             else {
-                Toast.makeText(this,"Invalid Url",Toast.LENGTH_SHORT).show()
+                showMessage("Invalid Url")
             }
         }
 
@@ -51,16 +57,17 @@ class MainActivity : AppCompatActivity() {
     {
         viewModel.response.observe(this, Observer {
             showProgress(false)
-            etUrl.setText(it.link)
+            tvUrl.text = it.link
+            showMessage("Link Generated SuccessFully!")
         })
 
         viewModel.error.observe(this, Observer {
             showProgress(false)
-            showError(it)
+            showMessage(it)
         })
     }
 
-    fun showError(error:String)
+    fun showMessage(error:String)
     {
         Toast.makeText(this,error,Toast.LENGTH_SHORT).show()
     }

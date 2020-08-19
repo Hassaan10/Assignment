@@ -2,7 +2,9 @@ package com.test.assignment.api
 
 import com.test.assignment.models.Actor
 import com.test.assignment.models.Event
+import com.test.assignment.models.Request
 import com.test.assignment.models.UrlResponse
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,6 +31,6 @@ interface UrlShortenerAPI {
 
 
     @POST("shorten")
-    @Headers("Authorization:Bearer efe5f6264a2d38bd0a326b77831e9f0f6357c290")
-    fun getShortenUrl(@Body long_url:String):Call<UrlResponse>
+    @Headers("Authorization: Bearer efe5f6264a2d38bd0a326b77831e9f0f6357c290","Content-Type: application/json")
+    fun getShortenUrl(@Body body:Request):Call<UrlResponse>
 }

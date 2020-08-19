@@ -2,11 +2,15 @@ package com.test.assignment.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.test.assignment.api.ApiBuilder
 import com.test.assignment.api.UrlShortenerAPI
 import com.test.assignment.models.Actor
 import com.test.assignment.models.Event
+import com.test.assignment.models.Request
 import com.test.assignment.models.UrlResponse
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,16 +68,23 @@ class MainRepository {
     //get shorten url from bitly api
     fun getShortenUrl(url:String)
     {
+        val request = Request(url)
 
-        api?.getShortenUrl(url)?.enqueue(object :Callback<UrlResponse>{
+
+        api?.getShortenUrl(request)?.enqueue(object :Callback<UrlResponse>{
             override fun onFailure(call: Call<UrlResponse>, t: Throwable) {
                 error.value = t.message
             }
+
 
             override fun onResponse(call: Call<UrlResponse>, response: Response<UrlResponse>) {
                 if(response.isSuccessful)
                 {
                     urlResponse.value = response.body()
+                }
+                else
+                {
+                    error.value = "Invalid request"
                 }
             }
 
